@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.gavin.study.mysqlcluster</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.9</version>
+		<relativePath>../mysql_cluster_parent</relativePath>
+	</parent>
+	
+	<artifactId>mysql_cluster_core</artifactId>
+	<packaging>jar</packaging>
+	
+	<name>${project.artifactId}</name>
+	<build>
+		<finalName>mysql_cluster_core</finalName>
+		<plugins>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>mysql_cluster_common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>

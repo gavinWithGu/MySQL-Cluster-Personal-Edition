@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="mysql_cluster_portal"
+  id="myeclipse.1431179422834"
+  context-root="/portal"
+  j2ee-spec="6.0"
+  archive="mysql_cluster_portal.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

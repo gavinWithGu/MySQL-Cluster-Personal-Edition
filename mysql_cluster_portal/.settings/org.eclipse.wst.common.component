@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="riskmodelling-portal">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
+        <dependent-module archiveName="mysql_cluster_common-0.9.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mysql_cluster_common/mysql_cluster_common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mysql_cluster_model-0.9.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mysql_cluster_model/mysql_cluster_model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mysql_cluster_dao-0.9.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mysql_cluster_dao/mysql_cluster_dao">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mysql_cluster_service-0.9.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mysql_cluster_service/mysql_cluster_service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mysql_cluster_core-0.9.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mysql_cluster_core/mysql_cluster_core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="/portal"/>
+        <property name="java-output-path" value="/riskmodelling-portal/src/main/webapp/src/main/resources"/>
+    </wb-module>
+</project-modules>

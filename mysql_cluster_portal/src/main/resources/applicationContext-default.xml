@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+						classpath:xsd/spring-beans-3.2.xsd.xml
+						http://www.springframework.org/schema/context 
+         				classpath:xsd/spring-context-3.2.xsd.xml
+         				http://www.springframework.org/schema/tx 
+         				classpath:xsd/spring-tx-3.2.xsd.xml
+						http://www.springframework.org/schema/aop  
+						classpath:xsd/spring-aop-3.2.xsd.xml
+						http://www.springframework.org/schema/mvc 
+						classpath:xsd/spring-mvc-3.2.xsd.xml
+						http://www.springframework.org/schema/tool
+						classpath:xsd/spring-tool-3.2.xsd.xml">
+	
+	<bean class="com.gavin.study.mysqlcluster.core.zookeeper.config.placeholderhelper.SpringPropertyPlaceholder">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <property name="ignoreResourceNotFound" value="true" />
+    </bean>
+
+	<!--定义数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClassName}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<property name="minPoolSize" value="10"></property>
+		<property name="maxPoolSize" value="20"></property>
+		<property name="maxIdleTime" value="1800"></property>
+		<property name="initialPoolSize" value="5"></property>
+		<property name="idleConnectionTestPeriod" value="1800"></property>
+		<property name="acquireRetryAttempts" value="30"></property>
+		<property name="breakAfterAcquireFailure" value="true"></property>
+		<property name="testConnectionOnCheckout" value="false"></property>
+		<!-- 处理mysql 8小时自动断开连接的问题 
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="validationQuery" value="select 1" />
+		<property name="numTestsPerEvictionRun" value="100" />
+		-->
+	</bean>
+
+	<!-- ====事务相关控制,指定datsource为dynamicDataSource -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dynamicDataSource" />
+	</bean>
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<!-- MyBatis sqlSessionFactory 配置 mybatis -->
+	<bean id="masterSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:sql-map-config.xml" />
+		<property name="mapperLocations" value="classpath*:com/gavin/study/mysqlcluster/mapper/map/*Mapper.xml" />
+	</bean>
+	
+	<!-- MyBatis sqlSessionFactory 配置 mybatis -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dynamicDataSource" />
+		<property name="configLocation" value="classpath:sql-map-config.xml" />
+		<property name="mapperLocations" value="classpath*:com/gavin/study/mysqlcluster/mapper/map/*Mapper.xml" />
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sessionFactory" />
+	</bean>
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.gavin.study.mysqlcluster.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sessionFactory" />
+		<property name="markerInterface" value="com.gavin.study.mysqlcluster.common.base.mapper.SqlMapper"></property>
+	</bean>
+	
+    <bean id="masterSlaveInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="masterSessionFactory" />
+        <property name="mapperInterface" value="com.gavin.study.mysqlcluster.mapper.MasterSlaveInfoMapper" />
+    </bean>
+	
+	<!-- Spring驱动注解自动检测Bean -->
+	<context:component-scan base-package="com.gavin.study">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!--默认的注解映射的支持 -->
+	<mvc:annotation-driven />
+	
+	<!-- 数据路由层 -->
+	<bean id="dynamicDataSource" class="com.gavin.study.mysqlcluster.core.dbcluster.datasource.DynamicDataSource">
+		<!-- 通过key-value的形式来关联数据源 -->
+		<property name="targetDataSources">
+			<map>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- aop，横切所有的server(可以扩展)，对所有的servic操作，注入threadlocal的master-slave库的默认实现 -->
+	<bean id="serviceAutoProxyCreator"
+        class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>*ServiceImpl</value>
+                 <value>*Service</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>beforeServiceAdvice</value>
+            </list>
+        </property>
+        <property name="proxyTargetClass" value="true" />
+	</bean>
+</beans>

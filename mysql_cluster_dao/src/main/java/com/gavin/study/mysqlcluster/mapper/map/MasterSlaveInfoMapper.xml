@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.insurance.mapper.MasterSlaveInfoMapper">
+
+	<resultMap id="masterSlave-resultMap" type="MasterSlaveInfo">
+		<id column="_ID" property="id" jdbcType="VARCHAR" />
+		<result column="_USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="_PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="_SCHEMA_INFO" property="schemaInfo" jdbcType="VARCHAR" />
+		<result column="_IS_MASTER" property="isMaster"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		_ID,_USER_NAME,_PASSWORD,_SCHEMA_INFO,_IS_MASTER
+	</sql>
+
+	<sql id="Where_Clause">
+		<where>
+			1 = 1
+		</where>
+	</sql>
+
+	<select id="getList" resultMap="masterSlave-resultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from T_MASTER_SLAVE_INFO
+		<include refid="Where_Clause" />
+	</select>
+</mapper>

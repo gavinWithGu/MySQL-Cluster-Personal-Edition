@@ -1,0 +1,37 @@
+Manifest-Version: 1.0
+Built-By: gavin
+Build-Jdk: 1.6.0_13
+Class-Path: . lib/mysql_cluster_common-0.9.jar lib/antlr-2.7.6.jar lib
+ /aopalliance-1.0.jar lib/asm-3.2.jar lib/aspectjrt-1.7.1.jar lib/aspe
+ ctjweaver-1.7.1.jar lib/c3p0-0.9.1.2.jar lib/cglib-nodep-2.2.jar lib/
+ commons-beanutils-1.8.3.jar lib/commons-codec-1.6.jar lib/commons-col
+ lections-3.2.jar lib/commons-dbcp-1.2.2.jar lib/commons-fileupload-1.
+ 2.1.jar lib/commons-io-1.4.jar lib/commons-lang-2.4.jar lib/commons-l
+ ogging-1.0.4.jar lib/commons-pool-1.2.jar lib/xml-apis-1.0.b2.jar lib
+ /commons-validator-1.1.4.jar lib/commons-httpclient-3.1.jar lib/dom4j
+ -1.6.1.jar lib/ezmorph-1.0.6.jar lib/freemarker-2.3.15.jar lib/javass
+ ist-3.9.0.GA.jar lib/mail-1.4.jar lib/jsch-0.1.44-1.jar lib/jta-1.1.j
+ ar lib/log4j-1.2.14.jar lib/mysql-connector-java-5.1.35.jar lib/slf4j
+ -log4j12-1.7.5.jar lib/slf4j-api-1.7.5.jar lib/spring-core-3.1.1.RELE
+ ASE.jar lib/spring-asm-3.1.1.RELEASE.jar lib/ws-commons-util-1.0.2.ja
+ r lib/xmlrpc-client-3.1.jar lib/xmlrpc-common-3.1.jar lib/json-lib-2.
+ 2.3-jdk15.jar lib/ganymed-ssh2-261.jar lib/spring-data-commons-1.5.1.
+ RELEASE.jar lib/jcl-over-slf4j-1.7.1.jar lib/spring-context-3.1.1.REL
+ EASE.jar lib/spring-aop-3.1.1.RELEASE.jar lib/spring-expression-3.1.1
+ .RELEASE.jar lib/spring-beans-3.1.1.RELEASE.jar lib/spring-orm-3.1.1.
+ RELEASE.jar lib/spring-jdbc-3.1.1.RELEASE.jar lib/spring-tx-3.1.1.REL
+ EASE.jar lib/spring-web-3.1.1.RELEASE.jar lib/spring-webmvc-3.1.1.REL
+ EASE.jar lib/spring-context-support-3.1.0.RELEASE.jar lib/quartz-1.8.
+ 6.jar lib/jstl-1.2.jar lib/commons-lang3-3.4.jar lib/mybatis-spring-1
+ .1.1.jar lib/mybatis-3.1.1.jar lib/httpclient-4.3.jar lib/httpcore-4.
+ 3.1.jar lib/jackson-mapper-asl-1.9.13.jar lib/jackson-core-asl-1.9.13
+ .jar lib/simple-spring-memcached-3.2.1.jar lib/xmemcached-provider-3.
+ 2.1.jar lib/xmemcached-1.4.2.jar lib/jsoup-1.8.2.jar lib/gson-2.2.4.j
+ ar lib/jdom-1.0.jar lib/httpmime-4.3.jar lib/json-20140107.jar lib/gr
+ izzly-http-servlet-2.1.2.jar lib/grizzly-framework-2.1.2.jar lib/gmba
+ l-api-only-3.0.0-b023.jar lib/management-api-3.0.0-b012.jar lib/grizz
+ ly-http-server-2.1.2.jar lib/grizzly-http-2.1.2.jar lib/grizzly-rcm-2
+ .1.2.jar lib/java_memcached-release-2.5.1.jar lib/zookeeper-3.4.6.jar
+  lib/jline-0.9.94.jar lib/netty-3.7.0.Final.jar lib/zkclient-0.1.jar
+Created-By: Maven Integration for Eclipse
+

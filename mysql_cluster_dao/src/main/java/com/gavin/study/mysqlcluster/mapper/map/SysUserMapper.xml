@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gavin.study.mysqlcluster.mapper.SysUserMapper">
+
+	<resultMap id="sysUser-resultMap" type="SysUser">
+		<id column="_id" property="id" jdbcType="VARCHAR" />
+		<result column="_login_name" property="loginName" jdbcType="VARCHAR" />
+		<result column="_password" property="password" jdbcType="VARCHAR" />
+		<result column="_work_number" property="workNumber" jdbcType="VARCHAR" />
+		<result column="_name" property="name" jdbcType="VARCHAR" />
+		<result column="_email" property="email" jdbcType="VARCHAR" />
+		<result column="_mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="_status" property="status" jdbcType="INTEGER" />
+		<result column="_defaulted" property="defaulted" jdbcType="INTEGER" />
+		<result column="_created_time" property="createdTime" />
+		<result column="_deleted_time" property="deletedTime" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		_id, _login_name, _password, _work_number, _name, _email, _mobile_phone, _status, _defaulted, _created_time
+	</sql>
+
+	<sql id="Where_Clause">
+		<where>
+			1 = 1
+			<if test="loginName != null and loginName != ''">
+				and _login_name like "%"#{loginName}"%"
+			</if>
+			<if test="name != null and name != ''">
+				and _name like "%"#{name}"%"
+			</if>
+			<if test="workNumber != null and workNumber != ''">
+				and _work_number like "%"#{workNumber}"%"
+			</if>
+			<if test="mobilePhone != null and mobilePhone != ''">
+				and _mobile_phone like "%"#{mobilePhone}"%"
+			</if>
+			and (_status=0 or _status=1)
+		</where>
+	</sql>
+
+	<select id="getSysUserList" resultMap="sysUser-resultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		<include refid="Where_Clause" />
+		order by _created_time desc
+		limit #{start},#{limit}
+	</select>
+
+	<select id="getSysUserCount" resultType="Integer" parameterType="map">
+		select
+		count(1)
+		from sys_user
+		<include refid="Where_Clause" />
+	</select>
+	
+	<select id="isExist"  resultType="Integer" parameterType="map">
+		select
+		count(1)
+		from sys_user
+		<where>
+			1 = 1
+			<if test="(loginName == null or loginName == '') 
+					  and (name == null or name == '')
+					  and (workNumber == null or workNumber == '')
+					  and (mobilePhone == null or mobilePhone == '')
+					  and (email == null or email == '')">
+				and 1 <![CDATA[ <> ]]> 1
+			</if>
+			<if test="loginName != null and loginName != ''">
+				and _login_name = #{loginName}
+			</if>
+			<if test="name != null and name != ''">
+				and _name = #{name}
+			</if>
+			<if test="workNumber != null and workNumber != ''">
+				and _work_number = #{workNumber}
+			</if>
+			<if test="mobilePhone != null and mobilePhone != ''">
+				and _mobile_phone = #{mobilePhone}
+			</if>
+			<if test="email != null and email != ''">
+				and _email = #{email}
+			</if>
+			<if test="id != null and id != ''">
+				and _id <![CDATA[ <> ]]> #{id}
+			</if>
+			and (_status= 0 or _status= 1)
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="SysUser" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user (_login_name, _password, _work_number, _name, _email, _mobile_phone, _status, _defaulted, _created_time)
+		values (#{loginName}, #{password}, #{workNumber}, #{name}, #{email}, #{mobilePhone}, #{status}, #{defaulted}, now())
+	</insert>
+	
+	<update id="update" parameterType="SysUser">
+		update sys_user
+		<set>
+			_work_number = #{workNumber}, _name = #{name}, _email = #{email}, _mobile_phone = #{mobilePhone}, _defaulted = #{defaulted}
+		</set>
+		<where>
+			_id = #{id}
+		</where>
+	</update>
+	
+	<update id="delete" parameterType="String">
+		update sys_user
+		<set>
+			_status = 2, _deleted_time = now()
+		</set>
+		<where>
+			_id in 
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+	</update>
+	
+	<update id="enable" parameterType="Map">
+		update sys_user
+		<set>
+			_status = #{status}
+		</set>
+		<where>
+			_id in
+			<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+	</update>
+	
+	<select id="load" resultMap="sysUser-resultMap" parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		<where>
+			_id = #{id}
+		</where>
+	</select>
+
+	<select id="login" resultMap="sysUser-resultMap" parameterType="java.lang.String">
+		select _id, _login_name, _password, _work_number, _name, _email, _mobile_phone, _status, _defaulted, _created_time
+		from sys_user
+		where _login_name = #{loginName} and _password = #{password}
+		and _status = 0
+	</select>
+</mapper>
